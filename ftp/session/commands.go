@@ -100,7 +100,10 @@ func (ses *Session) processRETR(tokens []string) bool {
 		return false
 	}
 
-	f, err := ses.fileProvider.Get(strings.Join(tokens[1:], " "))
+	file := clearPath(strings.Join(tokens[1:], " "))
+
+	f, err := ses.fileProvider.Get(file)
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "RETR", "file": file, "f": f, "err": err}).Debug("session::Session::processRETR method after ses.fileProvider.Get(file)")
 
 	if err != nil {
 		log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "err": err}).Warn("session::Session::processRETR fs.get failed")
@@ -394,7 +397,10 @@ func (ses *Session) processSIZE(tokens []string) bool {
 		return false
 	}
 
-	f, err := ses.fileProvider.Get(strings.Join(tokens[1:], " "))
+	file := clearPath(strings.Join(tokens[1:], " "))
+
+	f, err := ses.fileProvider.Get(file)
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "SIZE", "file": file, "f": f, "err": err}).Debug("session::Session::processSIZE method after ses.fileProvider.Get(file)")
 
 	if err != nil {
 		log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "err": err}).Warn("session::Session::processSIZE fs.get failed")
