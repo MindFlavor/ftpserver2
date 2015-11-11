@@ -75,7 +75,7 @@ func (ses *Session) processCWD(tokens []string) bool {
 		return false
 	}
 
-	path := strings.Join(tokens[1:], "/")
+	path := strings.Join(tokens[1:], " ")
 	path = clearPath(path)
 
 	err := ses.fileProvider.ChangeDirectory(path)
