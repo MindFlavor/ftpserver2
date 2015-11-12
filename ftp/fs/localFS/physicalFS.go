@@ -73,17 +73,21 @@ func (pfs *physicalFS) List() ([]fs.File, error) {
 }
 
 func (pfs *physicalFS) Get(filename string) (fs.File, error) {
-	fullpath := filepath.Join(pfs.currentRealDirectory, filename)
+	var fullpath string
+	if filename[0] == '/' {
+		fullpath = filepath.Join(pfs.homeRealDirectory, filename)
+	} else {
+		fullpath = filepath.Join(pfs.currentRealDirectory, filename)
+	}
 
 	log.WithFields(log.Fields{"pfs": pfs, "filename": filename, "fullpath": fullpath}).Debug("localFS::physicalFS::Get called")
-
 	f, err := os.Stat(path.Clean(fullpath))
 
 	if err != nil {
 		return nil, err
 	}
 
-	return physicalFile.New(filename, pfs.currentRealDirectory, f.IsDir(), f.Size(), f.ModTime(), f.Mode()), nil
+	return physicalFile.New(filepath.Base(fullpath), filepath.Dir(fullpath), f.IsDir(), f.Size(), f.ModTime(), f.Mode()), nil
 }
 
 func (pfs *physicalFS) New(name string, isDirectory bool) (fs.File, error) {

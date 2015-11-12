@@ -39,14 +39,14 @@ func (ses *Session) processFEAT(tokens []string) bool {
 	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "FEAT"}).Info("session::Session::processFEAT method begin")
 	buf := new(bytes.Buffer)
 
-	buf.WriteString("211-Features:\n\r")
+	buf.WriteString("211-Features:\r\n")
 
 	for _, cmd := range commands {
-		buf.WriteString(fmt.Sprintf("%s\n\r", cmd))
+		buf.WriteString(fmt.Sprintf(" %s\r\n", cmd))
 	}
 
 	if ses.cert != nil && !ses.conn.IsSecure() {
-		buf.WriteString(fmt.Sprintf("%s\n\r", "AUTH"))
+		buf.WriteString(fmt.Sprintf(" %s\r\n", "AUTH"))
 	}
 
 	buf.WriteString("211 End")
@@ -100,7 +100,10 @@ func (ses *Session) processRETR(tokens []string) bool {
 		return false
 	}
 
-	f, err := ses.fileProvider.Get(strings.Join(tokens[1:], " "))
+	file := clearPath(strings.Join(tokens[1:], " "))
+
+	f, err := ses.fileProvider.Get(file)
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "RETR", "file": file, "f": f, "err": err}).Debug("session::Session::processRETR method after ses.fileProvider.Get(file)")
 
 	if err != nil {
 		log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "err": err}).Warn("session::Session::processRETR fs.get failed")
@@ -394,7 +397,10 @@ func (ses *Session) processSIZE(tokens []string) bool {
 		return false
 	}
 
-	f, err := ses.fileProvider.Get(strings.Join(tokens[1:], " "))
+	file := clearPath(strings.Join(tokens[1:], " "))
+
+	f, err := ses.fileProvider.Get(file)
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "SIZE", "file": file, "f": f, "err": err}).Debug("session::Session::processSIZE method after ses.fileProvider.Get(file)")
 
 	if err != nil {
 		log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "err": err}).Warn("session::Session::processSIZE fs.get failed")

@@ -208,7 +208,7 @@ func (ses *Session) Close() {
 }
 
 func (ses *Session) sendStatement(statement string) {
-	if statement[len(statement)-1] != '\n' || (statement[len(statement)-2] != '\r' && statement[len(statement)-1] != '\n') {
+	if statement[len(statement)-2:] != "\r\n" {
 		statement += "\r\n"
 	}
 
