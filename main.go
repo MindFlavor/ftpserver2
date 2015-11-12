@@ -17,7 +17,11 @@ import (
 	"github.com/mindflavor/ftpserver2/ftp/fs"
 	"github.com/mindflavor/ftpserver2/ftp/fs/azure"
 	"github.com/mindflavor/ftpserver2/ftp/fs/localFS"
+
+	"github.com/rifflock/lfshook"
 )
+
+// example go install github.com/mindflavor/ftpserver2 && ftpserver2 -lfs C:\temp -ll Debug -lDebug D:\temp\ftp.log -lInfo D:\temp\ftp.log -lWarn D:\temp\ftp.log -lError D:\temp\ftp.log
 
 func main() {
 	authFunc := func(username, password string) bool {
@@ -33,13 +37,27 @@ func main() {
 	tlsCertFile := flag.String("crt", "", "TLS certificate file")
 	tlsKeyFile := flag.String("key", "", "TLS certificate key file")
 
-	plainCmdPort := flag.Int("plainPort", 21, "Plain FTP port (unencrypted). If you specify a TLS certificate and key encryption becomes optional")
-	encrCmdPort := flag.Int("tlsPort", 990, "Encrypted FTP port. If you do not specify a TLS certificate this port is ignored. If you specify -1 the implicit FTP is disabled")
+	plainCmdPort := flag.Int("plainPort", 21, "Plain FTP port (unencrypted). If you specify a TLS certificate and key encryption you can pass -1 to start a SFTP implicit server only")
+	encrCmdPort := flag.Int("tlsPort", 990, "Encrypted FTP port. If you do not specify a TLS certificate this port is ignored. If you specify -1 the implicit SFTP is disabled")
 
 	lowerPort := flag.Int("minPasvPort", 50000, "Lower passive port range")
 	higerPort := flag.Int("maxPasvPort", 50100, "Higher passive port range")
 
+	logFileDebug := flag.String("lDebug", "", "Debug level log file")
+	logFileInfo := flag.String("lInfo", "", "Info level log file")
+	logFileWarn := flag.String("lWarn", "", "Warn level log file")
+	logFileError := flag.String("lError", "", "Error level log file")
+
 	flag.Parse()
+
+	if *logFileDebug != "" || *logFileInfo != "" || *logFileWarn != "" || *logFileError != "" {
+		log.AddHook(lfshook.NewHook(lfshook.PathMap{
+			log.DebugLevel: *logFileDebug,
+			log.InfoLevel:  *logFileInfo,
+			log.WarnLevel:  *logFileWarn,
+			log.ErrorLevel: *logFileError,
+		}))
+	}
 
 	if (*azureAccount == "" || *azureKey == "") && *localFSRoot == "" {
 		log.Error("main::main must specify either a local file system root or a azure account (both name and key) as storage. Check the command line docs for help")
