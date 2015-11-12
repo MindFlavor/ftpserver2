@@ -39,14 +39,14 @@ func (ses *Session) processFEAT(tokens []string) bool {
 	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "FEAT"}).Info("session::Session::processFEAT method begin")
 	buf := new(bytes.Buffer)
 
-	buf.WriteString("211-Features:\n\r")
+	buf.WriteString("211-Features:\r\n")
 
 	for _, cmd := range commands {
-		buf.WriteString(fmt.Sprintf("%s\n\r", cmd))
+		buf.WriteString(fmt.Sprintf(" %s\r\n", cmd))
 	}
 
 	if ses.cert != nil && !ses.conn.IsSecure() {
-		buf.WriteString(fmt.Sprintf("%s\n\r", "AUTH"))
+		buf.WriteString(fmt.Sprintf(" %s\r\n", "AUTH"))
 	}
 
 	buf.WriteString("211 End")
