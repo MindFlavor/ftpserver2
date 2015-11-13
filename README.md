@@ -50,16 +50,35 @@ The main features are:
 This list may not be updated: please refer to [session.go](ftp/session/session.go) source file to the updated list.
 
 
-## How to use
-The main FTP server object can be called on its own in your project. Here, however, I give you a very simple program to test it. In order to use it download it, compile it and launch it (here we assume you have a folder called ```ftphome``` in your ```C:\``` disk):
+## How to build
+The main FTP server object can be called on its own in your project. Here, however, I give you a very simple program to test it. In order to use it download it, compile it and launch it. Here we suppose you have installed [GO](https://golang.org/) on your build machine and have the ```GOPATH``` environment variable set.
+
+### Download
+
+With this command you can download the code with all its references. You can also use it later to update to the latest source code:
 
 ```
 go get -u github.com/mindflavor/ftpserver2
-go install github.com/mindflavor/ftpserver2
+```
 
+### Build
+
+To build the application use this code. The binary will be saved in the ```%GOPATH\bin``` folder (```$GOPATH``` in linux):
+ 
+```
+go install github.com/mindflavor/ftpserver2
+```
+
+### Use
+Here we assume you have a folder called ```ftphome``` in your ```C:\``` disk. Substitute it with your FTP home folder.
+
+#### Windows
+```
 %GOPATH%\bin\ftpserver2 -lfs C:\ftphome
 ```
-If you are in linux replace the last line with
+
+#### Linux
+Here we assume you have a folder called ```/mnt/ftphome``` on your file system. Substitute it with your FTP home folder.
 
 ```
 sudo $GOPATH%/bin/ftpserver2 -lfs /mnt/ftphome
@@ -67,12 +86,14 @@ sudo $GOPATH%/bin/ftpserver2 -lfs /mnt/ftphome
 
 You need to be *su* in order to listen on port 21 (standard FTP command port). If you use another port you can start the program without *sudo*. Check the parameters section for how to do it.
 
-### Azure blob storage
+## Azure blob storage
 In order to have the FTP server serve the azure storage blobs simply replace the ```-lfs``` parameter with ```-ak``` and ```-an``` like this:
 
 ```
-$GOPATH%/bin/ftpserver2 -ak <mystorageaccount> -as <shared_key_primary_or_secondary>
+$GOPATH/bin/ftpserver2 -ak <mystorageaccount> -as <shared_key_primary_or_secondary>
 ```
+
+More info on the parameters in the Parameters section.
 
 ## Some screenshots
 
@@ -111,7 +132,9 @@ At any time you can call the executable with ```-help``` flag in order to be rem
 #### Notes
 
 1.These two flags must be specified together. If you need to retrieve the storage account key look here [http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key](http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key). You cannot both specify this flags and the local file system one (```lfs```).
+
 2.These two flags must be specified together. Without either one the secure extensions of FTP will be disabled. This article ([http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server](http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server)) explains how to generate both the certificate file and the key one.
+
 3.You cannot both specify this flag and the azure storage ones (```an``` and ```ak```).
 
 ## ToDo
@@ -132,3 +155,6 @@ At any time you can call the executable with ```-help``` flag in order to be rem
 * [ES File Explorer File Manager](https://play.google.com/store/apps/details?id=com.estrongs.android.pop)
 * [Turbo FTP client & SFTP client](https://play.google.com/store/apps/details?id=turbo.client)
 * [FTP Client](https://play.google.com/store/apps/details?id=my.mobi.android.apps4u.ftpclient)
+
+## Contributing
+If you want to contribute please do so, just fork and ask for merge.
