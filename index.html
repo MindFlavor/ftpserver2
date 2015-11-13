@@ -1,0 +1,295 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Azure storage FTP Secure server by MindFlavor</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Azure storage FTP Secure server</h1>
+        <p>Go FTP Secure server with support for local file system and Microsoft Azure Blob storage</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/MindFlavor/ftpserver2" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/MindFlavor/ftpserver2/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/MindFlavor/ftpserver2/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>
+<a id="go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" class="anchor" href="#go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Go FTP Secure server with support for local file system and Microsoft Azure Blob storage</h1>
+
+<p><a href="https://drone.io/github.com/MindFlavor/ftpserver2/latest"><img src="https://drone.io/github.com/MindFlavor/ftpserver2/status.png" alt="Build Status"></a></p>
+
+<p><a href="https://coveralls.io/github/MindFlavor/ftpserver2?branch=master"><img src="https://coveralls.io/repos/MindFlavor/ftpserver2/badge.svg?branch=master&amp;service=github" alt="Coverage Status"></a></p>
+
+<h3>
+<a id="a-pure-go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" class="anchor" href="#a-pure-go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" aria-hidden="true"><span class="octicon octicon-link"></span></a>A pure go FTP Secure server with support for local file system and <a href="https://azure.microsoft.com/en-us/documentation/services/storage/">Microsoft Azure Blob storage</a>.</h3>
+
+<p>The interface based file system makes easy to support different file systems. Please tell me if you are interested in something not covered here.</p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<p>This server implements most - not all - the FTP commands available. This should be enough for most <em>passive</em> clients, below you will find a tested program list.</p>
+
+<p>The main features are:</p>
+
+<ul>
+<li>Local file system support (ie standard FTP)</li>
+<li>Azure blob storage backed file system</li>
+<li>Unsecure (plain) FTP</li>
+<li>FTP Secure explicit</li>
+<li>FTP Secure implicit</li>
+<li>File system agnostic</li>
+<li>Pluggable logging system (thanks to <a href="https://github.com/Sirupsen/logrus">logrus</a>)</li>
+</ul>
+
+<h3>
+<a id="implemented-commands" class="anchor" href="#implemented-commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>Implemented commands</h3>
+
+<ul>
+<li>  USER</li>
+<li>  PASS</li>
+<li>  PWD</li>
+<li>  TYPE</li>
+<li>  PASV</li>
+<li>  EPSV</li>
+<li>  LIST</li>
+<li>  SYST</li>
+<li>  CWD</li>
+<li>  CDUP</li>
+<li>  SIZE</li>
+<li>  RETR</li>
+<li>  STOR</li>
+<li>  DELE</li>
+<li>  FEAT</li>
+<li>  QUIT</li>
+<li>  NOOP</li>
+<li>  MKD</li>
+<li>  RMD</li>
+<li>  REST</li>
+<li>  AUTH</li>
+<li>  PROT</li>
+</ul>
+
+<p>This list may not be updated: please refer to <a href="ftp/session/session.go">session.go</a> source file to the updated list.</p>
+
+<h2>
+<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use</h2>
+
+<p>The main FTP server object can be called on its own in your project. Here, however, I give you a very simple program to test it. In order to use it download it, compile it and launch it (here we assume you have a folder called <code>ftphome</code> in your <code>C:\</code> disk):</p>
+
+<pre><code>go get -u github.com/mindflavor/ftpserver2
+go install github.com/mindflavor/ftpserver2
+
+%GOPATH%\bin\ftpserver2 -lfs C:\ftphome
+</code></pre>
+
+<p>If you are in linux replace the last line with</p>
+
+<pre><code>sudo $GOPATH%/bin/ftpserver2 -lfs /mnt/ftphome
+</code></pre>
+
+<p>You need to be <em>su</em> in order to listen on port 21 (standard FTP command port). If you use another port you can start the program without <em>sudo</em>. Check the parameters section for how to do it.</p>
+
+<h3>
+<a id="azure-blob-storage" class="anchor" href="#azure-blob-storage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Azure blob storage</h3>
+
+<p>In order to have the FTP server serve the azure storage blobs simply replace the <code>-lfs</code> parameter with <code>-ak</code> and <code>-an</code> like this:</p>
+
+<pre><code>$GOPATH%/bin/ftpserver2 -ak &lt;mystorageaccount&gt; -as &lt;shared_key_primary_or_secondary&gt;
+</code></pre>
+
+<h2>
+<a id="some-screenshots" class="anchor" href="#some-screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some screenshots</h2>
+
+<p>This is an example of execution in ubuntu:</p>
+
+<p><img src="http://i.imgur.com/NDupZcK.jpg" alt=""></p>
+
+<p>As you can see here, TLS is available (it's up to you to use valid certs however):</p>
+
+<p><img src="http://i.imgur.com/Iv7d85S.jpg" alt=""></p>
+
+<p>Here is how an Azure storage account appears in Chrome:</p>
+
+<p><img src="http://i.imgur.com/2cWdtM1.jpg" alt=""></p>
+
+<h2>
+<a id="parameters" class="anchor" href="#parameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameters</h2>
+
+<p>At any time you can call the executable with <code>-help</code> flag in order to be reminded of the parameters.</p>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>an</code></td>
+<td>string</td>
+<td>Azure blob storage account name (<em>¢</em>)</td>
+<td><code>nil</code></td>
+</tr>
+<tr>
+<td><code>ak</code></td>
+<td>string</td>
+<td>Azure blob storage account key (either primary or secondary) (<em>¢</em>)</td>
+<td><code>nil</code></td>
+</tr>
+<tr>
+<td><code>crt</code></td>
+<td>string</td>
+<td>TLS certificate file (<em>¢¢</em>)</td>
+<td><code>nil</code></td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td>string</td>
+<td>TLS certificate key file (<em>¢¢</em>)</td>
+<td><code>nil</code></td>
+</tr>
+<tr>
+<td><code>lDebug</code></td>
+<td>string</td>
+<td>Debug level log file</td>
+<td><code>nil</code></td>
+</tr>
+<tr>
+<td><code>lError</code></td>
+<td>string</td>
+<td>Error level log file</td>
+<td><code>nil</code></td>
+</tr>
+<tr>
+<td><code>lInfo</code></td>
+<td>string</td>
+<td>Info level log file</td>
+<td><code>nil</code></td>
+</tr>
+<tr>
+<td><code>lWarn</code></td>
+<td>string</td>
+<td>Warn level log file</td>
+<td><code>nil</code></td>
+</tr>
+<tr>
+<td><code>lfs</code></td>
+<td>string</td>
+<td>Local file system root (<em>¢¢¢</em>)</td>
+<td><code>nil</code></td>
+</tr>
+<tr>
+<td><code>ll</code></td>
+<td>string</td>
+<td>Minimum log level. Available values are <code>Debug</code>, <code>Info</code>, <code>Warn</code>, <code>Error</code>
+</td>
+<td><code>Info</code></td>
+</tr>
+<tr>
+<td><code>maxPasvPort</code></td>
+<td>int</td>
+<td>Higher passive port range</td>
+<td>50100</td>
+</tr>
+<tr>
+<td><code>minPasvPort</code></td>
+<td>int</td>
+<td>Lower passive port range</td>
+<td>50000</td>
+</tr>
+<tr>
+<td><code>plainPort</code></td>
+<td>int</td>
+<td>Plain FTP port (unencrypted). If you specify a TLS certificate and key encryption you can pass -1 to start a SFTP implicit server only</td>
+<td>21</td>
+</tr>
+<tr>
+<td><code>tlsPort</code></td>
+<td>int</td>
+<td>Encrypted FTP port. If you do not specify a TLS certificate this port is ignored. If you specify -1 the implicit SFTP is disabled</td>
+<td>990</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="notes" class="anchor" href="#notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Notes</h4>
+
+<p>(<em>¢</em>) These two flags must be specified together. If you need to retrieve the storage account key look here <a href="http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key">http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key</a>. You cannot both specify this flags and the local file system one (<code>lfs</code>).
+(<em>¢¢</em>) These two flags must be specified together. Without either one the secure extensions of FTP will be disabled. This article (<a href="http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server">http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server</a>) explains how to generate both the certificate file and the key one.
+(<em>¢¢¢</em>) You cannot both specify this flag and the azure storage ones (<code>an</code> and <code>ak</code>).</p>
+
+<h2>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>ToDo</h2>
+
+<ul>
+<li>Better tests. Coverage is abysmal. Script unit testing for a distributed state machine such as FTP is a PITA though.</li>
+<li>File access privilege check (right now is ignored).</li>
+<li>Authentication. Right now the FTPServer delegates authentication to the caller but the provided executable does not validate the passed identity.</li>
+</ul>
+
+<h2>
+<a id="tested-clients" class="anchor" href="#tested-clients" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tested clients</h2>
+
+<h4>
+<a id="pc" class="anchor" href="#pc" aria-hidden="true"><span class="octicon octicon-link"></span></a>PC</h4>
+
+<ul>
+<li>
+<a href="https://filezilla-project.org/">FileZilla</a>.</li>
+<li>
+<a href="https://www.google.com/chrome/browser/desktop/">Chome</a>.</li>
+<li>
+<a href="https://www.mozilla.org/en-US/firefox/new/#">Firefox</a>.</li>
+<li>
+<a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer</a>.</li>
+</ul>
+
+<h4>
+<a id="android" class="anchor" href="#android" aria-hidden="true"><span class="octicon octicon-link"></span></a>Android</h4>
+
+<ul>
+<li><a href="https://play.google.com/store/apps/details?id=com.estrongs.android.pop">ES File Explorer File Manager</a></li>
+<li><a href="https://play.google.com/store/apps/details?id=turbo.client">Turbo FTP client &amp; SFTP client</a></li>
+<li><a href="https://play.google.com/store/apps/details?id=my.mobi.android.apps4u.ftpclient">FTP Client</a></li>
+</ul>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/MindFlavor">MindFlavor</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
