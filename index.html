@@ -99,30 +99,56 @@
 <p>This list may not be updated: please refer to <a href="ftp/session/session.go">session.go</a> source file to the updated list.</p>
 
 <h2>
-<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use</h2>
+<a id="how-to-build" class="anchor" href="#how-to-build" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to build</h2>
 
-<p>The main FTP server object can be called on its own in your project. Here, however, I give you a very simple program to test it. In order to use it download it, compile it and launch it (here we assume you have a folder called <code>ftphome</code> in your <code>C:\</code> disk):</p>
+<p>The main FTP server object can be called on its own in your project. Here, however, I give you a very simple program to test it. In order to use it download it, compile it and launch it. Here we suppose you have installed <a href="https://golang.org/">GO</a> on your build machine and have the <code>GOPATH</code> environment variable set.</p>
+
+<h3>
+<a id="download" class="anchor" href="#download" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download</h3>
+
+<p>With this command you can download the code with all its references. You can also use it later to update to the latest source code:</p>
 
 <pre><code>go get -u github.com/mindflavor/ftpserver2
-go install github.com/mindflavor/ftpserver2
-
-%GOPATH%\bin\ftpserver2 -lfs C:\ftphome
 </code></pre>
 
-<p>If you are in linux replace the last line with</p>
+<h3>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build</h3>
+
+<p>To build the application use this code. The binary will be saved in the <code>%GOPATH\bin</code> folder (<code>$GOPATH</code> in linux):</p>
+
+<pre><code>go install github.com/mindflavor/ftpserver2
+</code></pre>
+
+<h3>
+<a id="use" class="anchor" href="#use" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use</h3>
+
+<p>Here we assume you have a folder called <code>ftphome</code> in your <code>C:\</code> disk. Substitute it with your FTP home folder.</p>
+
+<h4>
+<a id="windows" class="anchor" href="#windows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Windows</h4>
+
+<pre><code>%GOPATH%\bin\ftpserver2 -lfs C:\ftphome
+</code></pre>
+
+<h4>
+<a id="linux" class="anchor" href="#linux" aria-hidden="true"><span class="octicon octicon-link"></span></a>Linux</h4>
+
+<p>Here we assume you have a folder called <code>/mnt/ftphome</code> on your file system. Substitute it with your FTP home folder.</p>
 
 <pre><code>sudo $GOPATH%/bin/ftpserver2 -lfs /mnt/ftphome
 </code></pre>
 
 <p>You need to be <em>su</em> in order to listen on port 21 (standard FTP command port). If you use another port you can start the program without <em>sudo</em>. Check the parameters section for how to do it.</p>
 
-<h3>
-<a id="azure-blob-storage" class="anchor" href="#azure-blob-storage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Azure blob storage</h3>
+<h2>
+<a id="azure-blob-storage" class="anchor" href="#azure-blob-storage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Azure blob storage</h2>
 
 <p>In order to have the FTP server serve the azure storage blobs simply replace the <code>-lfs</code> parameter with <code>-ak</code> and <code>-an</code> like this:</p>
 
-<pre><code>$GOPATH%/bin/ftpserver2 -ak &lt;mystorageaccount&gt; -as &lt;shared_key_primary_or_secondary&gt;
+<pre><code>$GOPATH/bin/ftpserver2 -ak &lt;mystorageaccount&gt; -as &lt;shared_key_primary_or_secondary&gt;
 </code></pre>
+
+<p>More info on the parameters in the Parameters section.</p>
 
 <h2>
 <a id="some-screenshots" class="anchor" href="#some-screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some screenshots</h2>
@@ -245,9 +271,11 @@ go install github.com/mindflavor/ftpserver2
 <h4>
 <a id="notes" class="anchor" href="#notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Notes</h4>
 
-<p>1.These two flags must be specified together. If you need to retrieve the storage account key look here <a href="http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key">http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key</a>. You cannot both specify this flags and the local file system one (<code>lfs</code>).
-2.These two flags must be specified together. Without either one the secure extensions of FTP will be disabled. This article (<a href="http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server">http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server</a>) explains how to generate both the certificate file and the key one.
-3.You cannot both specify this flag and the azure storage ones (<code>an</code> and <code>ak</code>).</p>
+<p>1.These two flags must be specified together. If you need to retrieve the storage account key look here <a href="http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key">http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key</a>. You cannot both specify this flags and the local file system one (<code>lfs</code>).</p>
+
+<p>2.These two flags must be specified together. Without either one the secure extensions of FTP will be disabled. This article (<a href="http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server">http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server</a>) explains how to generate both the certificate file and the key one.</p>
+
+<p>3.You cannot both specify this flag and the azure storage ones (<code>an</code> and <code>ak</code>).</p>
 
 <h2>
 <a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>ToDo</h2>
@@ -283,6 +311,11 @@ go install github.com/mindflavor/ftpserver2
 <li><a href="https://play.google.com/store/apps/details?id=turbo.client">Turbo FTP client &amp; SFTP client</a></li>
 <li><a href="https://play.google.com/store/apps/details?id=my.mobi.android.apps4u.ftpclient">FTP Client</a></li>
 </ul>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>If you want to contribute please do so, just fork and ask for merge.</p>
       </section>
       <footer>
         <p>Project maintained by <a href="https://github.com/MindFlavor">MindFlavor</a></p>
