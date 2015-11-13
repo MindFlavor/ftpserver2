@@ -21,7 +21,7 @@ import (
 	"github.com/rifflock/lfshook"
 )
 
-// example go install github.com/mindflavor/ftpserver2 && ftpserver2 -lfs C:\temp -ll Debug -lDebug D:\temp\ftp.log -lInfo D:\temp\ftp.log -lWarn D:\temp\ftp.log -lError D:\temp\ftp.log
+// example go install github.com/mindflavor/ftpserver2 && %GOPATH%\bin\ftpserver2 -lfs C:\temp -ll Debug -lDebug D:\temp\ftp.log -lInfo D:\temp\ftp.log -lWarn D:\temp\ftp.log -lError D:\temp\ftp.log -crt C:\temp\cert.pem -key C:\temp\key.pem
 
 func main() {
 	authFunc := func(username, password string) bool {
