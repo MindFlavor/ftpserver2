@@ -47,7 +47,7 @@ The main features are:
 *	AUTH
 *	PROT
 
-This list may not be updated: please refer to [session.go](ftp/session/session.go) source file to the updated list.
+This list may not be updated: please refer to [session.go](https://github.com/MindFlavor/ftpserver2/blob/master/ftp/session/session.go) source file to the updated list.
 
 
 ## How to build
