@@ -256,10 +256,16 @@ func getLocalIP() (net.IP, error) {
 			switch v := addr.(type) {
 			case *net.IPNet:
 				if v4 := v.IP.To4(); v4 != nil {
+					if v4.IsLoopback() {
+						continue
+					}
 					return v4, nil
 				}
 			case *net.IPAddr:
 				if v4 := v.IP.To4(); v4 != nil {
+					if v4.IsLoopback() {
+						continue
+					}
 					return v4, nil
 				}
 			}
