@@ -157,25 +157,25 @@ go install github.com/mindflavor/ftpserver2
 <tr>
 <td><code>an</code></td>
 <td>string</td>
-<td>Azure blob storage account name (<em>¢</em>)</td>
+<td>Azure blob storage account name (<em>1</em>)</td>
 <td><code>nil</code></td>
 </tr>
 <tr>
 <td><code>ak</code></td>
 <td>string</td>
-<td>Azure blob storage account key (either primary or secondary) (<em>¢</em>)</td>
+<td>Azure blob storage account key (either primary or secondary) (<em>1</em>)</td>
 <td><code>nil</code></td>
 </tr>
 <tr>
 <td><code>crt</code></td>
 <td>string</td>
-<td>TLS certificate file (<em>¢¢</em>)</td>
+<td>TLS certificate file (<em>2</em>)</td>
 <td><code>nil</code></td>
 </tr>
 <tr>
 <td><code>key</code></td>
 <td>string</td>
-<td>TLS certificate key file (<em>¢¢</em>)</td>
+<td>TLS certificate key file (<em>2</em>)</td>
 <td><code>nil</code></td>
 </tr>
 <tr>
@@ -205,7 +205,7 @@ go install github.com/mindflavor/ftpserver2
 <tr>
 <td><code>lfs</code></td>
 <td>string</td>
-<td>Local file system root (<em>¢¢¢</em>)</td>
+<td>Local file system root (<em>3</em>)</td>
 <td><code>nil</code></td>
 </tr>
 <tr>
@@ -245,9 +245,9 @@ go install github.com/mindflavor/ftpserver2
 <h4>
 <a id="notes" class="anchor" href="#notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Notes</h4>
 
-<p>(<em>¢</em>) These two flags must be specified together. If you need to retrieve the storage account key look here <a href="http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key">http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key</a>. You cannot both specify this flags and the local file system one (<code>lfs</code>).
-(<em>¢¢</em>) These two flags must be specified together. Without either one the secure extensions of FTP will be disabled. This article (<a href="http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server">http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server</a>) explains how to generate both the certificate file and the key one.
-(<em>¢¢¢</em>) You cannot both specify this flag and the azure storage ones (<code>an</code> and <code>ak</code>).</p>
+<p>1.These two flags must be specified together. If you need to retrieve the storage account key look here <a href="http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key">http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key</a>. You cannot both specify this flags and the local file system one (<code>lfs</code>).
+2.These two flags must be specified together. Without either one the secure extensions of FTP will be disabled. This article (<a href="http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server">http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server</a>) explains how to generate both the certificate file and the key one.
+3.You cannot both specify this flag and the azure storage ones (<code>an</code> and <code>ak</code>).</p>
 
 <h2>
 <a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>ToDo</h2>
