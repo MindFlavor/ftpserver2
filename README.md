@@ -93,15 +93,15 @@ At any time you can call the executable with ```-help``` flag in order to be rem
 
 |Flag|Type|Description|Default|
 |---|---|---|---|
-|```an```| string |        Azure blob storage account name (*¢*)|```nil```|
-|```ak```|string|Azure blob storage account key (either primary or secondary) (*¢*)|```nil```|
-|```crt```| string|        TLS certificate file (*¢¢*)|```nil```|
-|```key```| string|        TLS certificate key file (*¢¢*)|```nil```|
+|```an```| string |        Azure blob storage account name (*1*)|```nil```|
+|```ak```|string|Azure blob storage account key (either primary or secondary) (*1*)|```nil```|
+|```crt```| string|        TLS certificate file (*2*)|```nil```|
+|```key```| string|        TLS certificate key file (*2*)|```nil```|
 |```lDebug```| string|        Debug level log file|```nil```|
 |```lError```| string|        Error level log file|```nil```|
 |```lInfo```| string|        Info level log file|```nil```|
 |```lWarn```| string|        Warn level log file|```nil```|
-|```lfs```| string|        Local file system root (*¢¢¢*)|```nil```|
+|```lfs```| string|        Local file system root (*3*)|```nil```|
 |```ll```| string|        Minimum log level. Available values are ```Debug```, ```Info```, ```Warn```, ```Error``` |```Info```
 |```maxPasvPort```| int|        Higher passive port range |50100
 |```minPasvPort```| int|        Lower passive port range |50000
@@ -110,10 +110,9 @@ At any time you can call the executable with ```-help``` flag in order to be rem
 
 #### Notes
 
-(*¢*) These two flags must be specified together. If you need to retrieve the storage account key look here [http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key](http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key). You cannot both specify this flags and the local file system one (```lfs```).
-(*¢¢*) These two flags must be specified together. Without either one the secure extensions of FTP will be disabled. This article ([http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server](http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server)) explains how to generate both the certificate file and the key one.
-(*¢¢¢*) You cannot both specify this flag and the azure storage ones (```an``` and ```ak```).
-
+1.These two flags must be specified together. If you need to retrieve the storage account key look here [http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key](http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key). You cannot both specify this flags and the local file system one (```lfs```).
+2.These two flags must be specified together. Without either one the secure extensions of FTP will be disabled. This article ([http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server](http://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server)) explains how to generate both the certificate file and the key one.
+3.You cannot both specify this flag and the azure storage ones (```an``` and ```ak```).
 
 ## ToDo
 
