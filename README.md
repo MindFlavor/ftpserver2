@@ -1,4 +1,4 @@
-# Go FTP Secure server with support for local file system and Microsft Azure Blob storage
+# Go FTP Secure server with support for local file system and Microsoft Azure Blob storage
 
 [![Build Status](https://drone.io/github.com/MindFlavor/ftpserver2/status.png)](https://drone.io/github.com/MindFlavor/ftpserver2/latest)
 
