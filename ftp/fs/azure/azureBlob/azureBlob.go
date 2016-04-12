@@ -92,5 +92,5 @@ func (b *azureBlob) Clone() fs.File {
 }
 
 func (b azureBlob) Delete() error {
-	return b.client.DeleteBlob(b.path, b.name)
+	return b.client.DeleteBlob(b.path, b.name, nil)
 }
