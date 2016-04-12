@@ -1,8 +1,6 @@
 # Go FTP Secure server with support for local file system and Microsoft Azure Blob storage
 
-[![Build Status](https://drone.io/github.com/MindFlavor/ftpserver2/status.png)](https://drone.io/github.com/MindFlavor/ftpserver2/latest)
-
-[![Coverage Status](https://coveralls.io/repos/MindFlavor/ftpserver2/badge.svg?branch=master&service=github)](https://coveralls.io/github/MindFlavor/ftpserver2?branch=master)
+[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://img.shields.io/github/license/mashape/apistatus.svg) [![Build Status](https://drone.io/github.com/MindFlavor/ftpserver2/status.png)](https://drone.io/github.com/MindFlavor/ftpserver2/latest) [![Coverage Status](https://coveralls.io/repos/MindFlavor/ftpserver2/badge.svg?branch=master&service=github)](https://coveralls.io/github/MindFlavor/ftpserver2?branch=master)
 
 ### A pure go FTP Secure server with support for local file system and [Microsoft Azure Blob storage](https://azure.microsoft.com/en-us/documentation/services/storage/).
 
@@ -155,6 +153,9 @@ At any time you can call the executable with ```-help``` flag in order to be rem
 * [ES File Explorer File Manager](https://play.google.com/store/apps/details?id=com.estrongs.android.pop)
 * [Turbo FTP client & SFTP client](https://play.google.com/store/apps/details?id=turbo.client)
 * [FTP Client](https://play.google.com/store/apps/details?id=my.mobi.android.apps4u.ftpclient)
+
+### License
+Please refer here: [LICENSE](LICENSE).
 
 ## Contributing
 If you want to contribute please do so, just fork and ask for merge.
