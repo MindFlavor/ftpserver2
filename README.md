@@ -155,7 +155,7 @@ At any time you can call the executable with ```-help``` flag in order to be rem
 * [FTP Client](https://play.google.com/store/apps/details?id=my.mobi.android.apps4u.ftpclient)
 
 ### License
-Please refer here: [LICENSE](LICENSE).
+Please refer here: [LICENSE](https://github.com/MindFlavor/ftpserver2/blob/master/LICENSE).
 
 ## Contributing
 If you want to contribute please do so, just fork and ask for merge.
