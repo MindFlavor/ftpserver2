@@ -32,19 +32,17 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a id="go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" class="anchor" href="#go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Go FTP Secure server with support for local file system and Microsoft Azure Blob storage</h1>
+<a id="go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" class="anchor" href="#go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Go FTP Secure server with support for local file system and Microsoft Azure Blob storage</h1>
 
-<p><a href="https://drone.io/github.com/MindFlavor/ftpserver2/latest"><img src="https://drone.io/github.com/MindFlavor/ftpserver2/status.png" alt="Build Status"></a></p>
-
-<p><a href="https://coveralls.io/github/MindFlavor/ftpserver2?branch=master"><img src="https://coveralls.io/repos/MindFlavor/ftpserver2/badge.svg?branch=master&amp;service=github" alt="Coverage Status"></a></p>
+<p><a href="https://img.shields.io/github/license/mashape/apistatus.svg"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="License"></a> <a href="https://drone.io/github.com/MindFlavor/ftpserver2/latest"><img src="https://drone.io/github.com/MindFlavor/ftpserver2/status.png" alt="Build Status"></a> <a href="https://coveralls.io/github/MindFlavor/ftpserver2?branch=master"><img src="https://coveralls.io/repos/MindFlavor/ftpserver2/badge.svg?branch=master&amp;service=github" alt="Coverage Status"></a></p>
 
 <h3>
-<a id="a-pure-go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" class="anchor" href="#a-pure-go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" aria-hidden="true"><span class="octicon octicon-link"></span></a>A pure go FTP Secure server with support for local file system and <a href="https://azure.microsoft.com/en-us/documentation/services/storage/">Microsoft Azure Blob storage</a>.</h3>
+<a id="a-pure-go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" class="anchor" href="#a-pure-go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A pure go FTP Secure server with support for local file system and <a href="https://azure.microsoft.com/en-us/documentation/services/storage/">Microsoft Azure Blob storage</a>.</h3>
 
 <p>The interface based file system makes easy to support different file systems. Please tell me if you are interested in something not covered here.</p>
 
 <h2>
-<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
 
 <p>This server implements most - not all - the FTP commands available. This should be enough for most <em>passive</em> clients, below you will find a tested program list.</p>
 
@@ -61,7 +59,7 @@
 </ul>
 
 <h3>
-<a id="implemented-commands" class="anchor" href="#implemented-commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>Implemented commands</h3>
+<a id="implemented-commands" class="anchor" href="#implemented-commands" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Implemented commands</h3>
 
 <ul>
 <li>  USER</li>
@@ -91,12 +89,12 @@
 <p>This list may not be updated: please refer to <a href="https://github.com/MindFlavor/ftpserver2/blob/master/ftp/session/session.go">session.go</a> source file to the updated list.</p>
 
 <h2>
-<a id="how-to-build" class="anchor" href="#how-to-build" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to build</h2>
+<a id="how-to-build" class="anchor" href="#how-to-build" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to build</h2>
 
 <p>The main FTP server object can be called on its own in your project. Here, however, I give you a very simple program to test it. In order to use it download it, compile it and launch it. Here we suppose you have installed <a href="https://golang.org/">GO</a> on your build machine and have the <code>GOPATH</code> environment variable set.</p>
 
 <h3>
-<a id="download" class="anchor" href="#download" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download</h3>
+<a id="download" class="anchor" href="#download" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Download</h3>
 
 <p>With this command you can download the code with all its references. You can also use it later to update to the latest source code:</p>
 
@@ -104,7 +102,7 @@
 </code></pre>
 
 <h3>
-<a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build</h3>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build</h3>
 
 <p>To build the application use this code. The binary will be saved in the <code>%GOPATH\bin</code> folder (<code>$GOPATH</code> in linux):</p>
 
@@ -112,18 +110,18 @@
 </code></pre>
 
 <h3>
-<a id="use" class="anchor" href="#use" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use</h3>
+<a id="use" class="anchor" href="#use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use</h3>
 
 <p>Here we assume you have a folder called <code>ftphome</code> in your <code>C:\</code> disk. Substitute it with your FTP home folder.</p>
 
 <h4>
-<a id="windows" class="anchor" href="#windows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Windows</h4>
+<a id="windows" class="anchor" href="#windows" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Windows</h4>
 
 <pre><code>%GOPATH%\bin\ftpserver2 -lfs C:\ftphome
 </code></pre>
 
 <h4>
-<a id="linux" class="anchor" href="#linux" aria-hidden="true"><span class="octicon octicon-link"></span></a>Linux</h4>
+<a id="linux" class="anchor" href="#linux" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Linux</h4>
 
 <p>Here we assume you have a folder called <code>/mnt/ftphome</code> on your file system. Substitute it with your FTP home folder.</p>
 
@@ -133,7 +131,7 @@
 <p>You need to be <em>su</em> in order to listen on port 21 (standard FTP command port). If you use another port you can start the program without <em>sudo</em>. Check the parameters section for how to do it.</p>
 
 <h2>
-<a id="azure-blob-storage" class="anchor" href="#azure-blob-storage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Azure blob storage</h2>
+<a id="azure-blob-storage" class="anchor" href="#azure-blob-storage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Azure blob storage</h2>
 
 <p>In order to have the FTP server serve the azure storage blobs simply replace the <code>-lfs</code> parameter with <code>-ak</code> and <code>-an</code> like this:</p>
 
@@ -143,7 +141,7 @@
 <p>More info on the parameters in the Parameters section.</p>
 
 <h2>
-<a id="some-screenshots" class="anchor" href="#some-screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some screenshots</h2>
+<a id="some-screenshots" class="anchor" href="#some-screenshots" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Some screenshots</h2>
 
 <p>This is an example of execution in ubuntu:</p>
 
@@ -158,7 +156,7 @@
 <p><img src="http://i.imgur.com/2cWdtM1.jpg" alt=""></p>
 
 <h2>
-<a id="parameters" class="anchor" href="#parameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameters</h2>
+<a id="parameters" class="anchor" href="#parameters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parameters</h2>
 
 <p>At any time you can call the executable with <code>-help</code> flag in order to be reminded of the parameters.</p>
 
@@ -261,7 +259,7 @@
 </table>
 
 <h4>
-<a id="notes" class="anchor" href="#notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Notes</h4>
+<a id="notes" class="anchor" href="#notes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Notes</h4>
 
 <p>1.These two flags must be specified together. If you need to retrieve the storage account key look here <a href="http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key">http://stackoverflow.com/questions/6985921/where-can-i-find-my-azure-account-name-and-account-key</a>. You cannot both specify this flags and the local file system one (<code>lfs</code>).</p>
 
@@ -270,7 +268,7 @@
 <p>3.You cannot both specify this flag and the azure storage ones (<code>an</code> and <code>ak</code>).</p>
 
 <h2>
-<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>ToDo</h2>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ToDo</h2>
 
 <ul>
 <li>Better tests. Coverage is abysmal. Script unit testing for a distributed state machine such as FTP is a PITA though.</li>
@@ -279,10 +277,10 @@
 </ul>
 
 <h2>
-<a id="tested-clients" class="anchor" href="#tested-clients" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tested clients</h2>
+<a id="tested-clients" class="anchor" href="#tested-clients" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tested clients</h2>
 
 <h4>
-<a id="pc" class="anchor" href="#pc" aria-hidden="true"><span class="octicon octicon-link"></span></a>PC</h4>
+<a id="pc" class="anchor" href="#pc" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PC</h4>
 
 <ul>
 <li>
@@ -296,7 +294,7 @@
 </ul>
 
 <h4>
-<a id="android" class="anchor" href="#android" aria-hidden="true"><span class="octicon octicon-link"></span></a>Android</h4>
+<a id="android" class="anchor" href="#android" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Android</h4>
 
 <ul>
 <li><a href="https://play.google.com/store/apps/details?id=com.estrongs.android.pop">ES File Explorer File Manager</a></li>
@@ -304,8 +302,13 @@
 <li><a href="https://play.google.com/store/apps/details?id=my.mobi.android.apps4u.ftpclient">FTP Client</a></li>
 </ul>
 
+<h3>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h3>
+
+<p>Please refer here: <a href="LICENSE">LICENSE</a>.</p>
+
 <h2>
-<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h2>
 
 <p>If you want to contribute please do so, just fork and ask for merge.</p>
       </section>
