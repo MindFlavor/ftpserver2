@@ -105,7 +105,11 @@ func (pfs *azureFS) Get(filename string) (fs.File, error) {
 	}
 
 	// else blob
-	return azureBlob.New(toks[1], toks[0], 0, time.Now(), 0666, pfs.client), nil
+	props, err := pfs.client.GetBlobProperties(toks[0], strings.Join(toks[1:], "/"))
+	if err != nil {
+		return nil, err
+	}
+	return azureBlob.New(strings.Join(toks[1:], "/"), toks[0], props.ContentLength, parseAzureTime(props.LastModified), 0666, pfs.client), nil
 }
 
 func (pfs *azureFS) New(filename string, isDirectory bool) (fs.File, error) {
