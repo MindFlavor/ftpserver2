@@ -313,6 +313,68 @@ func (ses *Session) processLIST(tokens []string) bool {
 	return false
 }
 
+func (ses *Session) processNLST(tokens []string) bool {
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "NLST"}).Info("session::Session::processNLST method begin")
+
+	lastCWD := ses.fileProvider.CurrentDirectory()
+
+	if len(tokens) > 1 {
+		if err := ses.fileProvider.ChangeDirectory(tokens[1]); err != nil {
+			ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
+			return false
+		}
+	}
+
+	files, err := ses.fileProvider.List()
+
+	if err != nil {
+		ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
+		return false
+	}
+
+	if len(tokens) > 1 {
+		if err := ses.fileProvider.ChangeDirectory(lastCWD); err != nil {
+			ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
+			return false
+		}
+	}
+
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "NLST", "len(files)": len(files)}).Info("session::Session::processNLST method after ses.fileProvider.List()")
+
+	// prepare directory listing
+	buf := new(bytes.Buffer)
+	for _, file := range files {
+		str := fmt.Sprintf("%s\r\n", file.Name())
+		buf.WriteString(str)
+	}
+
+	dc := ses.lastDataChanneler
+	ses.lastDataChanneler = nil // dc in use!
+
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "NLST", "len(files)": len(files)}).Info("session::Session::processNLST method after ses.lastDataChanneler = nil")
+
+	dc.Sink(func(w io.Writer, r io.Reader) error {
+		defer dc.Close()
+
+		log.WithFields(log.Fields{"w": w, "string(buf.Bytes())": string(buf.Bytes())}).Debug("session::Session::processNLST::anonymous sending directory list")
+
+		ses.sendStatement("150 Here comes the directory listing.")
+
+		_, err := w.Write(buf.Bytes())
+
+		if err != nil {
+			ses.sendStatement(fmt.Sprintf("550 Directory listing error: %s", err))
+			return err
+		}
+
+		ses.sendStatement("226 Directory send OK.")
+		return nil
+	})
+
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "NLST"}).Info("session::Session::processNLST method end with success")
+	return false
+}
+
 func (ses *Session) processUSER(tokens []string) bool {
 	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "USER"}).Info("session::Session::processUSER method begin")
 	if len(tokens) < 2 {

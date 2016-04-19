@@ -41,6 +41,7 @@ const (
 	MKD
 	RMD
 	REST
+	NLST
 
 //	AUTH auth must be handled manually
 //	PROT auth must be handled manually
@@ -67,6 +68,7 @@ var commands = []string{
 	"MKD",
 	"RMD",
 	"REST",
+	"NLST",
 	//	"AUTH", auth must be handled manually
 	//	"PROT", auth must be handled manually
 }
@@ -182,6 +184,8 @@ func (ses *Session) Handle() error {
 			terminateProcessing = newCmdList(ses, tokens, ses.processDELE).requireAuth().resetUSER().resetREST().Execute()
 		case commands[REST]:
 			terminateProcessing = newCmdList(ses, tokens, ses.processREST).requireAuth().requirePASV().resetUSER().resetREST().Execute()
+		case commands[NLST]:
+			terminateProcessing = newCmdList(ses, tokens, ses.processNLST).requireAuth().requirePASV().resetUSER().resetREST().Execute()
 		case "AUTH":
 			terminateProcessing = newCmdList(ses, tokens, ses.processAUTH).resetUSER().resetREST().Execute()
 		case "PROT":
