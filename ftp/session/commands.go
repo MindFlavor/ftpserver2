@@ -134,8 +134,19 @@ func (ses *Session) processRETR(tokens []string) bool {
 		for {
 			iRead, err := file.Read(buf)
 
+			log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "read": iRead, "f.Size()": f.Size()}).Debug("session::Session::processRETR transfer starting")
+
 			if err != nil {
 				if err == io.EOF {
+					// Flush buffer
+					iWritten, err := w.Write(buf[0:iRead])
+					if err != nil {
+						// something went south :(
+						log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "err": err}).Warn("session::Session::processRETR socket.Send failed")
+						return err
+					}
+					log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "sent": iWritten, "f.Size()": f.Size()}).Debug("session::Session::processRETR transfer starting")
+
 					// done
 					log.WithFields(log.Fields{"ses": ses, "tokens": tokens}).Info("session::Session::processRETR transfer completed")
 					ses.sendStatement("226 File send OK.")
@@ -147,13 +158,13 @@ func (ses *Session) processRETR(tokens []string) bool {
 				return err
 			}
 
-			_, err = w.Write(buf[0:iRead])
+			iWritten, err := w.Write(buf[0:iRead])
 			if err != nil {
 				// something went south :(
 				log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "err": err}).Warn("session::Session::processRETR socket.Send failed")
 				return err
 			}
-			//			log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "sent": iWritten, "f.Size()": f.Size()}).Debug("session::Session::processRETR transfer starting")
+			log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "sent": iWritten, "f.Size()": f.Size()}).Debug("session::Session::processRETR transfer starting")
 		}
 	})
 
