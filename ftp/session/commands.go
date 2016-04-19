@@ -237,11 +237,27 @@ func (ses *Session) processSTOR(tokens []string) bool {
 func (ses *Session) processLIST(tokens []string) bool {
 	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "LIST"}).Info("session::Session::processLIST method begin")
 
+	lastCWD := ses.fileProvider.CurrentDirectory()
+
+	if len(tokens) > 1 {
+		if err := ses.fileProvider.ChangeDirectory(tokens[1]); err != nil {
+			ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
+			return false
+		}
+	}
+
 	files, err := ses.fileProvider.List()
 
 	if err != nil {
 		ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
 		return false
+	}
+
+	if len(tokens) > 1 {
+		if err := ses.fileProvider.ChangeDirectory(lastCWD); err != nil {
+			ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
+			return false
+		}
 	}
 
 	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "LIST", "len(files)": len(files)}).Info("session::Session::processLIST method after ses.fileProvider.List()")

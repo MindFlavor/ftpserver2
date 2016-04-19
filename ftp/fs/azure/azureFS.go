@@ -73,8 +73,14 @@ func (pfs *azureFS) List() ([]fs.File, error) {
 	}
 
 	// files!
-	lbParams := storage.ListBlobsParameters{MaxResults: 1000}
-	lbr, err := pfs.client.ListBlobs(pfs.currentRealDirectory, lbParams)
+	toks := splitAndCleanPath(pfs.currentRealDirectory)
+	var lbParams storage.ListBlobsParameters
+	if len(toks) == 1 {
+		lbParams = storage.ListBlobsParameters{MaxResults: 1000, Delimiter: "/"}
+	} else {
+		lbParams = storage.ListBlobsParameters{MaxResults: 1000, Prefix: strings.Join(toks[1:], "/") + "/", Delimiter: "/"}
+	}
+	lbr, err := pfs.client.ListBlobs(toks[0], lbParams)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +88,8 @@ func (pfs *azureFS) List() ([]fs.File, error) {
 	blobs := make([]fs.File, len(lbr.Blobs))
 
 	for i, item := range lbr.Blobs {
-		blobs[i] = azureBlob.New(item.Name, pfs.currentRealDirectory, item.Properties.ContentLength, parseAzureTime(item.Properties.LastModified), 0666, pfs.client)
+		toks := splitAndCleanPath(item.Name)
+		blobs[i] = azureBlob.New(toks[len(toks)-1], pfs.currentRealDirectory, item.Properties.ContentLength, parseAzureTime(item.Properties.LastModified), 0666, pfs.client)
 	}
 
 	return blobs, nil
@@ -126,7 +133,7 @@ func (pfs *azureFS) New(filename string, isDirectory bool) (fs.File, error) {
 		return azureContainer.New(filename, time.Now(), pfs.client), nil
 	}
 
-	return azureBlob.New(toks[1], toks[0], 0, time.Now(), 0666, pfs.client), nil
+	return azureBlob.New(strings.Join(toks[1:], "/"), toks[0], 0, time.Now(), 0666, pfs.client), nil
 }
 
 func (pfs *azureFS) Clone() fs.FileProvider {
