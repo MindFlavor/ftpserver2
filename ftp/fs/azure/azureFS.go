@@ -169,14 +169,33 @@ func (pfs *azureFS) ChangeDirectory(path string) error {
 		toks = toks[:len(toks)-2]
 	}
 
+	// Container
 	if len(toks) == 1 {
+		exists, err := pfs.client.ContainerExists(toks[0])
+		if err != nil {
+			return err
+		}
+		if !exists {
+			return fmt.Errorf("cannot change directory: container not found")
+		}
 		pfs.currentRealDirectory = toks[0]
 		log.WithFields(log.Fields{"pfs": pfs, "path": path, "len(toks)": len(toks), "toks": toks}).Debug("azureFS::azureFS::ChangeDirectory changed to container")
 		return nil
 	}
 
-	log.WithFields(log.Fields{"pfs": pfs, "path": path, "len(toks)": len(toks), "toks": toks}).Warn("azureFS::azureFS::ChangeDirectory azure storage does not support nested containers")
-	return fmt.Errorf("cannot change directory: azure storage supports only root level container")
+	// Then, Blob
+	exists, err := pfs.client.BlobExists(toks[0], strings.Join(toks[1:], "/"))
+	if err != nil {
+		return err
+	}
+	if !exists {
+		return fmt.Errorf("cannot change directory: blob not found")
+	}
+	pfs.currentRealDirectory = strings.Join(toks, "/")
+
+	log.WithFields(log.Fields{"pfs": pfs, "path": path, "len(toks)": len(toks), "toks": toks}).Debug("azureFS::azureFS::ChangeDirectory changed to blob")
+
+	return nil
 }
 
 func (pfs *azureFS) CreateDirectory(path string) error {
@@ -189,12 +208,17 @@ func (pfs *azureFS) CreateDirectory(path string) error {
 
 	toks := splitAndCleanPath(fullpath)
 
-	if len(toks) > 1 {
-		return fmt.Errorf("cannot nest subdirectories in azure storage")
+	if _, err := pfs.client.CreateContainerIfNotExists(toks[0], storage.ContainerAccessTypePrivate); err != nil {
+		return err
 	}
 
-	return pfs.client.CreateContainer(path, storage.ContainerAccessTypePrivate)
+	// Container only
+	if len(toks) == 1 {
+		return nil
+	}
 
+	// Blob
+	return pfs.client.CreateBlockBlob(toks[0], strings.Join(toks[1:], "/"))
 }
 
 func (pfs *azureFS) RemoveDirectory(path string) error {
