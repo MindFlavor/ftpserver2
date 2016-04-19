@@ -385,7 +385,7 @@ func (ses *Session) processTYPE(tokens []string) bool {
 		return false
 	}
 
-	ses.sendStatement("202 Type I and A are the only one supported")
+	ses.sendStatement(fmt.Sprintf("200 Type set to %s", strings.ToUpper(tokens[1])))
 	return false
 }
 
