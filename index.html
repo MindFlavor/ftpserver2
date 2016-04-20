@@ -34,7 +34,8 @@
         <h1>
 <a id="go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" class="anchor" href="#go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Go FTP Secure server with support for local file system and Microsoft Azure Blob storage</h1>
 
-<p><a href="https://img.shields.io/github/license/mashape/apistatus.svg"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="License"></a> <a href="https://drone.io/github.com/MindFlavor/ftpserver2/latest"><img src="https://drone.io/github.com/MindFlavor/ftpserver2/status.png" alt="Build Status"></a> <a href="https://coveralls.io/github/MindFlavor/ftpserver2?branch=master"><img src="https://coveralls.io/repos/MindFlavor/ftpserver2/badge.svg?branch=master&amp;service=github" alt="Coverage Status"></a></p>
+<p><a href="https://img.shields.io/github/license/mashape/apistatus.svg"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="License"></a> 
+<a href="https://img.shields.io/github/release/MindFlavor/ftpserver2.svg"><img src="https://img.shields.io/github/release/MindFlavor/ftpserver2.svg" alt="Release"></a> <a href="https://drone.io/github.com/MindFlavor/ftpserver2/latest"><img src="https://drone.io/github.com/MindFlavor/ftpserver2/status.png" alt="Build Status"></a> <a href="https://img.shields.io/github/commits-since/MindFlavor/ftpserver2/v1.1.svg"><img src="https://img.shields.io/github/commits-since/MindFlavor/ftpserver2/v1.1.svg" alt="Commits since"></a> <a href="https://coveralls.io/github/MindFlavor/ftpserver2?branch=master"><img src="https://coveralls.io/repos/MindFlavor/ftpserver2/badge.svg?branch=master&amp;service=github" alt="Coverage Status"></a> </p>
 
 <h3>
 <a id="a-pure-go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" class="anchor" href="#a-pure-go-ftp-secure-server-with-support-for-local-file-system-and-microsoft-azure-blob-storage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A pure go FTP Secure server with support for local file system and <a href="https://azure.microsoft.com/en-us/documentation/services/storage/">Microsoft Azure Blob storage</a>.</h3>
@@ -55,36 +56,127 @@
 <li>FTP Secure explicit</li>
 <li>FTP Secure implicit</li>
 <li>File system agnostic</li>
+<li>Azure nested directory support (thanks to <a href="https://github.com/shuichiro-makigaki">Shuichiro MAKIGAKI</a>)</li>
 <li>Pluggable logging system (thanks to <a href="https://github.com/Sirupsen/logrus">logrus</a>)</li>
 </ul>
 
 <h3>
 <a id="implemented-commands" class="anchor" href="#implemented-commands" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Implemented commands</h3>
 
-<ul>
-<li>  USER</li>
-<li>  PASS</li>
-<li>  PWD</li>
-<li>  TYPE</li>
-<li>  PASV</li>
-<li>  EPSV</li>
-<li>  LIST</li>
-<li>  SYST</li>
-<li>  CWD</li>
-<li>  CDUP</li>
-<li>  SIZE</li>
-<li>  RETR</li>
-<li>  STOR</li>
-<li>  DELE</li>
-<li>  FEAT</li>
-<li>  QUIT</li>
-<li>  NOOP</li>
-<li>  MKD</li>
-<li>  RMD</li>
-<li>  REST</li>
-<li>  AUTH</li>
-<li>  PROT</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Since version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USER</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>PASS</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>PWD</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>TYPE</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>PASV</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>EPSV</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>LIST</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>SYST</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>CWD</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>CDUP</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>SIZE</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>RETR</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>STOR</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>DELE</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>FEAT</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>QUIT</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>NOOP</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>MKD</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>RMD</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>REST</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>AUTH</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>PROT</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0">1.0</a></td>
+</tr>
+<tr>
+<td>NLST</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.1">1.1</a></td>
+</tr>
+<tr>
+<td>LIST nested</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.1">1.1</a></td>
+</tr>
+<tr>
+<td>CWD nested</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.1">1.1</a></td>
+</tr>
+<tr>
+<td>MKD nested</td>
+<td><a href="https://github.com/MindFlavor/ftpserver2/releases/tag/v1.1">1.1</a></td>
+</tr>
+</tbody>
+</table>
 
 <p>This list may not be updated: please refer to <a href="https://github.com/MindFlavor/ftpserver2/blob/master/ftp/session/session.go">session.go</a> source file to the updated list.</p>
 
@@ -310,7 +402,8 @@
 <h2>
 <a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h2>
 
-<p>If you want to contribute please do so, just fork and ask for merge.</p>
+<p>If you want to contribute please do so, just fork and ask for merge. 
+An huge <em>thank you</em> to everyone contributing (please see here the <a href="https://github.com/MindFlavor/ftpserver2/graphs/contributors">GitHub contributors page</a> for their names).</p>
       </section>
     </div>
 
