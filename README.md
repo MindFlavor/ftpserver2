@@ -1,9 +1,10 @@
 # Go FTP Secure server with support for local file system and Microsoft Azure Blob storage
 
-[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://img.shields.io/github/license/mashape/apistatus.svg) [![Build Status](https://drone.io/github.com/MindFlavor/ftpserver2/status.png)](https://drone.io/github.com/MindFlavor/ftpserver2/latest) [![Coverage Status](https://coveralls.io/repos/MindFlavor/ftpserver2/badge.svg?branch=master&service=github)](https://coveralls.io/github/MindFlavor/ftpserver2?branch=master)
+[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://img.shields.io/github/license/mashape/apistatus.svg) 
+[![Release](https://img.shields.io/github/release/MindFlavor/ftpserver2.svg)](https://img.shields.io/github/release/MindFlavor/ftpserver2.svg) [![Build Status](https://drone.io/github.com/MindFlavor/ftpserver2/status.png)](https://drone.io/github.com/MindFlavor/ftpserver2/latest) [![Commits since](https://img.shields.io/github/commits-since/MindFlavor/ftpserver2/v1.1.svg)](https://img.shields.io/github/commits-since/MindFlavor/ftpserver2/v1.1.svg) [![Coverage Status](https://coveralls.io/repos/MindFlavor/ftpserver2/badge.svg?branch=master&service=github)](https://coveralls.io/github/MindFlavor/ftpserver2?branch=master) 
+
 
 ### A pure go FTP Secure server with support for local file system and [Microsoft Azure Blob storage](https://azure.microsoft.com/en-us/documentation/services/storage/).
-
 
 
 The interface based file system makes easy to support different file systems. Please tell me if you are interested in something not covered here.
@@ -18,32 +19,41 @@ The main features are:
 * FTP Secure explicit
 * FTP Secure implicit
 * File system agnostic
+* Azure nested directory support (thanks to [Shuichiro MAKIGAKI](https://github.com/shuichiro-makigaki))
 * Pluggable logging system (thanks to [logrus](https://github.com/Sirupsen/logrus))
 
 ### Implemented commands
 
-*	USER
-*	PASS
-*	PWD
-*	TYPE
-*	PASV
-*	EPSV
-*	LIST
-*	SYST
-*	CWD
-*	CDUP
-*	SIZE
-*	RETR
-*	STOR
-*	DELE
-*	FEAT
-*	QUIT
-*	NOOP
-*	MKD
-*	RMD
-*	REST
-*	AUTH
-*	PROT
+Command | Since version 
+--- | ----
+USER | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+PASS | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+PWD  | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+TYPE | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+PASV | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+EPSV | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+LIST | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+SYST | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+CWD  | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+CDUP | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+SIZE | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+RETR | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+STOR | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+DELE | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+FEAT | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+QUIT | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+NOOP | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+MKD  | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+RMD  | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+REST | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+AUTH | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+PROT | [1.0](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.0)
+NLST | [1.1](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.1)
+LIST nested | [1.1](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.1)
+CWD nested  | [1.1](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.1)
+MKD nested  | [1.1](https://github.com/MindFlavor/ftpserver2/releases/tag/v1.1)
+
+
 
 This list may not be updated: please refer to [session.go](https://github.com/MindFlavor/ftpserver2/blob/master/ftp/session/session.go) source file to the updated list.
 
@@ -62,7 +72,7 @@ go get -u github.com/mindflavor/ftpserver2
 ### Build
 
 To build the application use this code. The binary will be saved in the ```%GOPATH\bin``` folder (```$GOPATH``` in linux):
- 
+
 ```
 go install github.com/mindflavor/ftpserver2
 ```
@@ -158,4 +168,5 @@ At any time you can call the executable with ```-help``` flag in order to be rem
 Please refer here: [LICENSE](https://github.com/MindFlavor/ftpserver2/blob/master/LICENSE).
 
 ## Contributing
-If you want to contribute please do so, just fork and ask for merge.
+If you want to contribute please do so, just fork and ask for merge. 
+An huge *thank you* to everyone contributing (please see here the [GitHub contributors page](https://github.com/MindFlavor/ftpserver2/graphs/contributors) for their names).
