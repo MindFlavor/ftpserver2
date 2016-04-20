@@ -73,8 +73,14 @@ func (pfs *azureFS) List() ([]fs.File, error) {
 	}
 
 	// files!
-	lbParams := storage.ListBlobsParameters{MaxResults: 1000}
-	lbr, err := pfs.client.ListBlobs(pfs.currentRealDirectory, lbParams)
+	toks := splitAndCleanPath(pfs.currentRealDirectory)
+	var lbParams storage.ListBlobsParameters
+	if len(toks) == 1 {
+		lbParams = storage.ListBlobsParameters{MaxResults: 1000, Delimiter: "/"}
+	} else {
+		lbParams = storage.ListBlobsParameters{MaxResults: 1000, Prefix: strings.Join(toks[1:], "/") + "/", Delimiter: "/"}
+	}
+	lbr, err := pfs.client.ListBlobs(toks[0], lbParams)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +88,8 @@ func (pfs *azureFS) List() ([]fs.File, error) {
 	blobs := make([]fs.File, len(lbr.Blobs))
 
 	for i, item := range lbr.Blobs {
-		blobs[i] = azureBlob.New(item.Name, pfs.currentRealDirectory, item.Properties.ContentLength, parseAzureTime(item.Properties.LastModified), 0666, pfs.client)
+		toks := splitAndCleanPath(item.Name)
+		blobs[i] = azureBlob.New(toks[len(toks)-1], pfs.currentRealDirectory, item.Properties.ContentLength, parseAzureTime(item.Properties.LastModified), 0666, pfs.client)
 	}
 
 	return blobs, nil
@@ -105,7 +112,11 @@ func (pfs *azureFS) Get(filename string) (fs.File, error) {
 	}
 
 	// else blob
-	return azureBlob.New(toks[1], toks[0], 0, time.Now(), 0666, pfs.client), nil
+	props, err := pfs.client.GetBlobProperties(toks[0], strings.Join(toks[1:], "/"))
+	if err != nil {
+		return nil, err
+	}
+	return azureBlob.New(strings.Join(toks[1:], "/"), toks[0], props.ContentLength, parseAzureTime(props.LastModified), 0666, pfs.client), nil
 }
 
 func (pfs *azureFS) New(filename string, isDirectory bool) (fs.File, error) {
@@ -122,7 +133,7 @@ func (pfs *azureFS) New(filename string, isDirectory bool) (fs.File, error) {
 		return azureContainer.New(filename, time.Now(), pfs.client), nil
 	}
 
-	return azureBlob.New(toks[1], toks[0], 0, time.Now(), 0666, pfs.client), nil
+	return azureBlob.New(strings.Join(toks[1:], "/"), toks[0], 0, time.Now(), 0666, pfs.client), nil
 }
 
 func (pfs *azureFS) Clone() fs.FileProvider {
@@ -165,14 +176,33 @@ func (pfs *azureFS) ChangeDirectory(path string) error {
 		toks = toks[:len(toks)-2]
 	}
 
+	// Container
 	if len(toks) == 1 {
+		exists, err := pfs.client.ContainerExists(toks[0])
+		if err != nil {
+			return err
+		}
+		if !exists {
+			return fmt.Errorf("cannot change directory: container not found")
+		}
 		pfs.currentRealDirectory = toks[0]
 		log.WithFields(log.Fields{"pfs": pfs, "path": path, "len(toks)": len(toks), "toks": toks}).Debug("azureFS::azureFS::ChangeDirectory changed to container")
 		return nil
 	}
 
-	log.WithFields(log.Fields{"pfs": pfs, "path": path, "len(toks)": len(toks), "toks": toks}).Warn("azureFS::azureFS::ChangeDirectory azure storage does not support nested containers")
-	return fmt.Errorf("cannot change directory: azure storage supports only root level container")
+	// Then, Blob
+	exists, err := pfs.client.BlobExists(toks[0], strings.Join(toks[1:], "/"))
+	if err != nil {
+		return err
+	}
+	if !exists {
+		return fmt.Errorf("cannot change directory: blob not found")
+	}
+	pfs.currentRealDirectory = strings.Join(toks, "/")
+
+	log.WithFields(log.Fields{"pfs": pfs, "path": path, "len(toks)": len(toks), "toks": toks}).Debug("azureFS::azureFS::ChangeDirectory changed to blob")
+
+	return nil
 }
 
 func (pfs *azureFS) CreateDirectory(path string) error {
@@ -185,12 +215,17 @@ func (pfs *azureFS) CreateDirectory(path string) error {
 
 	toks := splitAndCleanPath(fullpath)
 
-	if len(toks) > 1 {
-		return fmt.Errorf("cannot nest subdirectories in azure storage")
+	if _, err := pfs.client.CreateContainerIfNotExists(toks[0], storage.ContainerAccessTypePrivate); err != nil {
+		return err
 	}
 
-	return pfs.client.CreateContainer(path, storage.ContainerAccessTypePrivate)
+	// Container only
+	if len(toks) == 1 {
+		return nil
+	}
 
+	// Blob
+	return pfs.client.CreateBlockBlob(toks[0], strings.Join(toks[1:], "/"))
 }
 
 func (pfs *azureFS) RemoveDirectory(path string) error {

@@ -134,8 +134,19 @@ func (ses *Session) processRETR(tokens []string) bool {
 		for {
 			iRead, err := file.Read(buf)
 
+			log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "read": iRead, "f.Size()": f.Size()}).Debug("session::Session::processRETR transfer starting")
+
 			if err != nil {
 				if err == io.EOF {
+					// Flush buffer
+					iWritten, err := w.Write(buf[0:iRead])
+					if err != nil {
+						// something went south :(
+						log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "err": err}).Warn("session::Session::processRETR socket.Send failed")
+						return err
+					}
+					log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "sent": iWritten, "f.Size()": f.Size()}).Debug("session::Session::processRETR transfer starting")
+
 					// done
 					log.WithFields(log.Fields{"ses": ses, "tokens": tokens}).Info("session::Session::processRETR transfer completed")
 					ses.sendStatement("226 File send OK.")
@@ -147,13 +158,13 @@ func (ses *Session) processRETR(tokens []string) bool {
 				return err
 			}
 
-			_, err = w.Write(buf[0:iRead])
+			iWritten, err := w.Write(buf[0:iRead])
 			if err != nil {
 				// something went south :(
 				log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "err": err}).Warn("session::Session::processRETR socket.Send failed")
 				return err
 			}
-			//			log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "sent": iWritten, "f.Size()": f.Size()}).Debug("session::Session::processRETR transfer starting")
+			log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "sent": iWritten, "f.Size()": f.Size()}).Debug("session::Session::processRETR transfer starting")
 		}
 	})
 
@@ -226,11 +237,27 @@ func (ses *Session) processSTOR(tokens []string) bool {
 func (ses *Session) processLIST(tokens []string) bool {
 	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "LIST"}).Info("session::Session::processLIST method begin")
 
+	lastCWD := ses.fileProvider.CurrentDirectory()
+
+	if len(tokens) > 1 {
+		if err := ses.fileProvider.ChangeDirectory(tokens[1]); err != nil {
+			ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
+			return false
+		}
+	}
+
 	files, err := ses.fileProvider.List()
 
 	if err != nil {
 		ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
 		return false
+	}
+
+	if len(tokens) > 1 {
+		if err := ses.fileProvider.ChangeDirectory(lastCWD); err != nil {
+			ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
+			return false
+		}
 	}
 
 	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "LIST", "len(files)": len(files)}).Info("session::Session::processLIST method after ses.fileProvider.List()")
@@ -283,6 +310,68 @@ func (ses *Session) processLIST(tokens []string) bool {
 	})
 
 	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "LIST"}).Info("session::Session::processLIST method end with success")
+	return false
+}
+
+func (ses *Session) processNLST(tokens []string) bool {
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "NLST"}).Info("session::Session::processNLST method begin")
+
+	lastCWD := ses.fileProvider.CurrentDirectory()
+
+	if len(tokens) > 1 {
+		if err := ses.fileProvider.ChangeDirectory(tokens[1]); err != nil {
+			ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
+			return false
+		}
+	}
+
+	files, err := ses.fileProvider.List()
+
+	if err != nil {
+		ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
+		return false
+	}
+
+	if len(tokens) > 1 {
+		if err := ses.fileProvider.ChangeDirectory(lastCWD); err != nil {
+			ses.sendStatement(fmt.Sprintf("451 cannot retrieve directory list: %s", err))
+			return false
+		}
+	}
+
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "NLST", "len(files)": len(files)}).Info("session::Session::processNLST method after ses.fileProvider.List()")
+
+	// prepare directory listing
+	buf := new(bytes.Buffer)
+	for _, file := range files {
+		str := fmt.Sprintf("%s\r\n", file.Name())
+		buf.WriteString(str)
+	}
+
+	dc := ses.lastDataChanneler
+	ses.lastDataChanneler = nil // dc in use!
+
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "NLST", "len(files)": len(files)}).Info("session::Session::processNLST method after ses.lastDataChanneler = nil")
+
+	dc.Sink(func(w io.Writer, r io.Reader) error {
+		defer dc.Close()
+
+		log.WithFields(log.Fields{"w": w, "string(buf.Bytes())": string(buf.Bytes())}).Debug("session::Session::processNLST::anonymous sending directory list")
+
+		ses.sendStatement("150 Here comes the directory listing.")
+
+		_, err := w.Write(buf.Bytes())
+
+		if err != nil {
+			ses.sendStatement(fmt.Sprintf("550 Directory listing error: %s", err))
+			return err
+		}
+
+		ses.sendStatement("226 Directory send OK.")
+		return nil
+	})
+
+	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "NLST"}).Info("session::Session::processNLST method end with success")
 	return false
 }
 
@@ -385,7 +474,7 @@ func (ses *Session) processTYPE(tokens []string) bool {
 		return false
 	}
 
-	ses.sendStatement("202 Type I and A are the only one supported")
+	ses.sendStatement(fmt.Sprintf("200 Type set to %s", strings.ToUpper(tokens[1])))
 	return false
 }
 
