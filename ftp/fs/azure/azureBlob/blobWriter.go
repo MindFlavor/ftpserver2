@@ -32,7 +32,7 @@ func NewBlockBlobWriter(b *azureBlob) (io.WriteCloser, error) {
 }
 
 func (w *blockblobWriter) Write(p []byte) (int, error) {
-	nextBlock64 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%4d", w.cnt)))
+	nextBlock64 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%5d", w.cnt)))
 	//	log.WithFields(log.Fields{"len(p)": len(p), "w.b.Path()": w.b.Path(), "w.b.Name()": w.b.Name(), "nextBlock64": nextBlock64, "w.cnt": w.cnt}).Debug("azureBlob::blockblobWriter::Write called")
 
 	w.cnt++
