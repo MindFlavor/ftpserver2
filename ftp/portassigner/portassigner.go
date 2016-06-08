@@ -4,6 +4,7 @@ package portassigner
 
 import (
 	"fmt"
+	"net"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/mindflavor/goserializer"
@@ -50,9 +51,15 @@ func (pa *paService) AssignPort() (int, error) {
 	ret := pa.handler.Serialize(func() interface{} {
 		for i, inUse := range pa.cAssigned {
 			if !inUse {
-				pa.cAssigned[i] = true
-				pa.free--
-				return i + pa.minPASVPort
+				// Comfirm that the port is actually free.
+				p := i + pa.minPASVPort
+				if l, err := net.Listen("tcp", fmt.Sprintf(":%d", p)); err == nil {
+					// The port is available to listen.
+					l.Close()
+					pa.cAssigned[i] = true
+					pa.free--
+					return p
+				}
 			}
 		}
 		return noMorePorts
