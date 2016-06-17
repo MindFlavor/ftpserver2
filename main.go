@@ -7,9 +7,10 @@ package main
 import (
 	"crypto/tls"
 	"flag"
-	"fmt"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -122,5 +123,26 @@ func main() {
 
 	srv.Accept()
 
-	fmt.Scanf("%s")
+	signal_chan := make(chan os.Signal, 1)
+	var code int
+	signal.Notify(signal_chan)
+	for {
+		s := <-signal_chan
+		switch s {
+		case syscall.SIGINT:
+			log.WithFields(log.Fields{"signal": "SIGINT"}).Warn("main::main " + s.String())
+			code = 0
+		case syscall.SIGTERM:
+			log.WithFields(log.Fields{"signal": "SIGTERM"}).Warn("main::main " + s.String())
+			code = 0
+		case syscall.SIGPIPE:
+			log.WithFields(log.Fields{"signal": "SIGPIPE"}).Warn("main::main " + s.String())
+			continue
+		default:
+			log.Error("main::main Unknown signal (" + s.String() + ")")
+			code = 1
+		}
+		break
+	}
+	os.Exit(code)
 }
