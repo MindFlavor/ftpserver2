@@ -201,7 +201,7 @@ func (ses *Session) processSTOR(tokens []string) bool {
 		}
 		defer file.Close()
 
-		buf := make([]byte, 1024*1024*4)
+		buf := make([]byte, 1024*1024*100)
 
 		ses.sendStatement(fmt.Sprintf("150 Opening BINARY mode data connection for %s.", f.Name()))
 
