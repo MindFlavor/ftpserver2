@@ -303,6 +303,9 @@ func (ses *Session) retrievePassivePort() error {
 }
 
 func clearPath(s string) string {
+	if s == ".." {
+		return s
+	}
 	p := strings.Join(splitAndClearPath(s), "/")
 	if s[0] == '/' {
 		return "/" + p
