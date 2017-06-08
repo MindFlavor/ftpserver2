@@ -58,7 +58,7 @@ func (ses *Session) processFEAT(tokens []string) bool {
 
 func (ses *Session) processPWD(tokens []string) bool {
 	log.WithFields(log.Fields{"ses": ses, "tokens": tokens, "command": "PWD"}).Info("session::Session::processPWD method begin")
-	ses.sendStatement(fmt.Sprintf("250 \"%s\"", ses.fileProvider.CurrentDirectory()))
+	ses.sendStatement(fmt.Sprintf("257 \"%s\"", ses.fileProvider.CurrentDirectory()))
 	return false
 }
 
@@ -524,7 +524,7 @@ func (ses *Session) processMKD(tokens []string) bool {
 		return false
 	}
 
-	ses.sendStatement(fmt.Sprintf("250 \"%s\" directory created", dir.FullPath()))
+	ses.sendStatement(fmt.Sprintf("257 \"%s\" directory created", dir.FullPath()))
 
 	return false
 }
