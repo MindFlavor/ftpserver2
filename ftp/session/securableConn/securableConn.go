@@ -10,7 +10,7 @@ import (
 	"io"
 	"net"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 // Conn interface exposes the method that will

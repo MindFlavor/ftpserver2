@@ -8,7 +8,7 @@ import (
 	"io"
 	"net"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/mindflavor/ftpserver2/ftp/portassigner"
 )
 
