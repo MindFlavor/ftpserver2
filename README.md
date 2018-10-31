@@ -20,7 +20,7 @@ The main features are:
 * FTP Secure implicit
 * File system agnostic
 * Azure nested directory support (thanks to [Shuichiro MAKIGAKI](https://github.com/shuichiro-makigaki))
-* Pluggable logging system (thanks to [logrus](https://github.com/Sirupsen/logrus))
+* Pluggable logging system (thanks to [logrus](https://github.com/sirupsen/logrus))
 
 ### Implemented commands
 

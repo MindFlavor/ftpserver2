@@ -7,7 +7,7 @@ import (
 	"io"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/Azure/azure-sdk-for-go/storage"
 	"github.com/mindflavor/ftpserver2/ftp/fs"
